@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1736715509228,
+      "tag": "0000_salty_magneto",
+      "breakpoints": true
+    }
+  ]
+}
