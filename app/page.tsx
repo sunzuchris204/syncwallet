@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Landmark,
   ArrowUpRight,
@@ -39,8 +39,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+import  TransactionForm  from "../components/ui/TransactionForm";
 
 // Mock data for the accounts
 const accounts = [
@@ -50,16 +51,75 @@ const accounts = [
 ];
 
 // Mock data for transactions
-const transactions = [
-  { id: '1', date: '2024-03-20', description: 'Grocery Store', amount: -120.50, type: 'expense' },
-  { id: '2', date: '2024-03-19', description: 'Salary Deposit', amount: 3000.00, type: 'income' },
-  { id: '3', date: '2024-03-18', description: 'Restaurant', amount: -85.20, type: 'expense' },
-  { id: '4', date: '2024-03-17', description: 'Freelance Payment', amount: 750.00, type: 'income' },
-];
+// const transactions = [
+//   { id: '1', date: '2024-03-20', description: 'Grocery Store', amount: -120.50, type: 'expense' },
+//   { id: '2', date: '2024-03-19', description: 'Salary Deposit', amount: 3000.00, type: 'income' },
+//   { id: '3', date: '2024-03-18', description: 'Restaurant', amount: -85.20, type: 'expense' },
+//   { id: '4', date: '2024-03-17', description: 'Freelance Payment', amount: 750.00, type: 'income' },
+// ];
+
+// Api Data
+// Fetching accounts and transactions from an API
+export interface Transaction {
+  id: number;
+  amount: number;
+  type: string;
+  accountId: number;
+  date: string;
+  category: string;
+}
+
+export interface Accounts {
+  id: number;
+  name: string;
+  balance: number;
+}
 
 function App() {
+
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedAccount, setSelectedAccount] = useState(accounts[0].id);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/accounts/');
+        const data = await response.json();
+
+        // Check if the response contains transactionsData and if it's an array
+        if (data?.AccountsData && Array.isArray(data.AccountsData)) {
+          setTransactions(data.AccountsData);
+        } else {
+          console.error("Invalid data structure received:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
+  
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/transactions/');
+        const data = await response.json();
+
+        // Check if the response contains transactionsData and if it's an array
+        if (data?.transactionsData && Array.isArray(data.transactionsData)) {
+          setTransactions(data.transactionsData);  // Set the transactions data
+        } else {
+          console.error("Invalid data structure received:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
   
   const currentAccount = accounts.find(account => account.id === selectedAccount);
 
@@ -183,6 +243,10 @@ function App() {
                         Add Transaction
                       </Button>
                     </DialogTrigger>
+                    <DialogContent>
+                      {/* Render the Create Transaction Form here */}
+                      <TransactionForm />
+                  </DialogContent>
                   </Dialog>
                 </div>
 
@@ -201,7 +265,7 @@ function App() {
                       {transactions.map((transaction) => (
                         <TableRow key={transaction.id}>
                           <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
-                          <TableCell>{transaction.description}</TableCell>
+                          <TableCell>{transaction.category}</TableCell>
                           <TableCell>
                             <Badge 
                               variant={transaction.type === 'income' ? 'default' : 'secondary'}

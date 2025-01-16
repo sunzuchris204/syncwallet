@@ -39,6 +39,7 @@ const FormPopup = () => {
     e.preventDefault();
     console.log(formData);
     // Submit form logic here
+    
   };
 
   return (

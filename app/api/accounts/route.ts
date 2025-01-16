@@ -3,8 +3,8 @@ import { createAccounts, getAccounts } from '../../services/AccountsServices';
 
 export async function GET() {
   try {
-    const transactions = await getAccounts();
-    return NextResponse.json({ transactions });
+    const AccountsData = await getAccounts();
+    return NextResponse.json({ AccountsData });
   } catch (error) {
     return NextResponse.json({ message: 'Error fetching transactions', error });
   }
