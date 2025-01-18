@@ -7,8 +7,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 
  export async function GET(
-    req: Request,
-    { params }: { params: { id: string } }
+  req: Request,
+  { params }: { params: { id: string } }
   ) {
     try {
         const id = parseInt(params.id, 10);
