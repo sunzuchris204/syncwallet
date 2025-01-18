@@ -6,10 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
- export async function GET(req: Request,{ params }: { params: { id: string } }) {
+ export async function GET(
+    req: Request,
+    { params }: { params: { id: string } }
+  ) {
     try {
-        // const { id } = await params;
-        const id = parseInt(params.id);
+        const id = parseInt(params.id, 10);
 
         if(isNaN(id)) {
             return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
