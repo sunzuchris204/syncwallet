@@ -25,34 +25,35 @@ import { NextRequest, NextResponse } from "next/server";
     }
   }
 
-  export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-      try {
-        const id = parseInt(params.id);
+  // export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+  //     try {
+  //       const {id} = await params;
+  //       const parseID = parseInt(id);
     
-        if (!id) {
-          return NextResponse.json(
-            { message: "Account ID is required for deletion." },
-            { status: 400 }
-          );
-        }
+  //       if (!id) {
+  //         return NextResponse.json(
+  //           { message: "Account ID is required for deletion." },
+  //           { status: 400 }
+  //         );
+  //       }
     
-        const deletedAccount = await deleteAccount(Number(id));
+  //       const deletedAccount = await deleteAccount(Number(parseID));
     
-        if (!deletedAccount) {
-          return NextResponse.json(
-            { message: "Account not found." },
-            { status: 404 }
-          );
-        }
+  //       if (!deletedAccount) {
+  //         return NextResponse.json(
+  //           { message: "Account not found." },
+  //           { status: 404 }
+  //         );
+  //       }
     
-        return NextResponse.json(
-          { message: "Account deleted successfully" },
-          { status: 200 }
-        );
-      } catch (error) {
-        return NextResponse.json(
-          { message: "Error deleting Account", error },
-          { status: 500 }
-        );
-      }
-    }
+  //       return NextResponse.json(
+  //         { message: "Account deleted successfully" },
+  //         { status: 200 }
+  //       );
+  //     } catch (error) {
+  //       return NextResponse.json(
+  //         { message: "Error deleting Account", error },
+  //         { status: 500 }
+  //       );
+  //     }
+  //   }
