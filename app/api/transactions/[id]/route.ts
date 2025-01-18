@@ -7,12 +7,12 @@ import {
     updateTransaction,
     deleteTransaction
  } from "../../../services/transactionService";
+import { PagesRouteHandlerContext } from 'next/dist/server/route-modules/pages/module.compiled';
 
 
- export async function GET(req: Request,{ params }: { params: { id: string } }) {
-    try {
-        // const { id } = await params;
-        const accountId = parseInt(params.id);
+ export async function GET(req: Request,context: PagesRouteHandlerContext<{ id: string }>) {
+  try {
+      const accountId = parseInt(context.params.id, 10);
 
         if(isNaN(accountId)) {
             return NextResponse.json({ error: 'Invalid account ID format' }, { status: 400 });
@@ -32,9 +32,9 @@ import {
     }
 }
 
- export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-    try {
-      const id = parseInt(params.id);
+ export async function PATCH(req: NextRequest, context: PagesRouteHandlerContext<{ id: string }>) {
+     try {
+         const id = parseInt(context.params.id, 10);
       const data = await req.json();
   
       const updatedTransaction = await updateTransaction(id, data);
@@ -50,9 +50,9 @@ import {
   }
 
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-    try {
-        const id = parseInt(params.id);
+export async function DELETE(req: Request, context: PagesRouteHandlerContext<{ id: string }>) {
+  try {
+      const id = parseInt(context.params.id, 10);
   
       if (!id) {
         return NextResponse.json(
