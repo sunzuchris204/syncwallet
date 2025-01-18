@@ -26,6 +26,7 @@ export interface Transaction {
   }
 export default function Reports() {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [transactions, setTransactions] = useState<Transaction[]>([]); 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
