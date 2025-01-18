@@ -48,7 +48,7 @@ import { NextRequest, NextResponse } from "next/server";
 
   export async function DELETE(req: Request, { params }: { params: { id: string } }) {
       try {
-          const id = parseInt(params.id);
+        const id = parseInt(params.id);
     
         if (!id) {
           return NextResponse.json(

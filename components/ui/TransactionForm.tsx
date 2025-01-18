@@ -34,8 +34,8 @@ const TransactionForm = () => {
         const data = await response.json();
 
         // Check if the response contains the "transactions" array
-        if (data && Array.isArray(data.transactions)) {
-          setAccounts(data.transactions); // Use transactions as accounts
+        if (data && Array.isArray(data.AccountsData)) {
+          setAccounts(data.AccountsData); // Use transactions as accounts
         } else {
           console.error("Expected 'transactions' array, but got:", data);
         }
@@ -99,7 +99,7 @@ const TransactionForm = () => {
                     <SelectValue placeholder="Select transaction type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="income">Income</SelectItem>
+                    <SelectItem value="Income">Income</SelectItem>
                     <SelectItem value="expense">Expense</SelectItem>
                   </SelectContent>
                 </Select>

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 'use client';
 import { useEffect, useState } from 'react';
 import {
@@ -12,6 +13,7 @@ import {
   Building2,
   PieChart,
   MoreVertical,
+  FileText,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import {
@@ -42,13 +44,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 // import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 import  TransactionForm  from "../components/ui/TransactionForm";
+import Accounts from '@/components/ui/accounts';
+import { Budget } from '@/components/ui/Budget';
+import Reports from '@/components/ui/Reports';
 
 // Mock data for the accounts
-const accounts = [
-  { id: '1', name: 'Main Account', bank: 'Chase', balance: 5420.69 },
-  { id: '2', name: 'Savings', bank: 'Bank of America', balance: 15780.42 },
-  { id: '3', name: 'Business', bank: 'Wells Fargo', balance: 892.12 },
-];
+// const accounts = [
+//   { id: '1', name: 'Main Account', bank: 'Chase', balance: 5420.69 },
+//   { id: '2', name: 'Savings', bank: 'Bank of America', balance: 15780.42 },
+//   { id: '3', name: 'Business', bank: 'Wells Fargo', balance: 892.12 },
+// ];
 
 // Mock data for transactions
 // const transactions = [
@@ -77,9 +82,10 @@ export interface Accounts {
 
 function App() {
 
+  const [accounts, setAccounts] = useState<Accounts[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [selectedAccount, setSelectedAccount] = useState(accounts[0].id);
+  const [selectedAccount, setSelectedAccount] = useState<number | null>();
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -89,7 +95,10 @@ function App() {
 
         // Check if the response contains transactionsData and if it's an array
         if (data?.AccountsData && Array.isArray(data.AccountsData)) {
-          setTransactions(data.AccountsData);
+          setAccounts(data.AccountsData);
+          if (data.AccountsData.length > 0) {
+            setSelectedAccount(data.AccountsData[0].id);  // Set the first account as default
+          }
         } else {
           console.error("Invalid data structure received:", data);
         }
@@ -121,7 +130,9 @@ function App() {
     fetchTransactions();
   }, []);
   
-  const currentAccount = accounts.find(account => account.id === selectedAccount);
+  let currentAccount = accounts.find(account => account.id === selectedAccount);
+  
+  
 
   return (
     <div className="min-h-screen bg-background">
@@ -163,6 +174,14 @@ function App() {
               <PieChart className="mr-2 h-4 w-4" />
               Budget
             </Button>
+            <Button
+              variant={activeTab === 'reports' ? 'secondary' : 'ghost'}
+              className="w-full justify-start"
+              onClick={() => setActiveTab('reports')}
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              Reports
+            </Button>
           </nav>
         </div>
 
@@ -187,7 +206,7 @@ function App() {
                             </div>
                             <div className="flex flex-col items-start gap-1">
                               <span className="text-base font-medium">{currentAccount?.name}</span>
-                              <span className="text-sm text-muted-foreground">{currentAccount?.bank}</span>
+                              {/* <span className="text-sm text-muted-foreground">Mtn Mobile Money</span> */}
                             </div>
                           </div>
                         </SelectValue>
@@ -201,7 +220,7 @@ function App() {
                               </div>
                               <div className="flex flex-col items-start">
                                 <span className="text-base font-medium">{account.name}</span>
-                                <span className="text-sm text-muted-foreground">{account.bank}</span>
+                                {/* <span className="text-sm text-muted-foreground">{account.bank}</span> */}
                               </div>
                             </div>
                           </SelectItem>
@@ -221,11 +240,11 @@ function App() {
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-[70%] h-[70%] rounded-full bg-card border-2 border-primary flex flex-col items-center justify-center p-8">
                         <span className="text-3xl lg:text-4xl font-bold text-primary mb-2">
-                          ${currentAccount?.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          ${currentAccount?.balance}
                         </span>
                         <div className="text-center">
                           <p className="text-sm font-medium text-muted-foreground">Current Balance</p>
-                          <p className="text-xs text-muted-foreground mt-1">{currentAccount?.bank} • {currentAccount?.name}</p>
+                          {/* <p className="text-xs text-muted-foreground mt-1">{currentAccount?.bank} • {currentAccount?.name}</p> */}
                         </div>
                       </div>
                     </div>
@@ -278,7 +297,7 @@ function App() {
                               ) : (
                                 <ArrowDownRight className="w-3 h-3 mr-1 inline-block" />
                               )}
-                              {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
+                              { transaction.type}
                             </Badge>
                           </TableCell>
                           <TableCell className={cn(
@@ -315,6 +334,9 @@ function App() {
               </div>
             </>
           )}
+          {activeTab === 'accounts' && <Accounts />}
+          {activeTab === 'budget' && <Budget />}
+          {activeTab === 'reports' && <Reports />}
         </div>
       </div>
     </div>
