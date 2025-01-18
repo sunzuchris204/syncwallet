@@ -6,30 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
- export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-  ) {
-    try {
-        const id = parseInt(params.id, 10);
 
-        if(isNaN(id)) {
-            return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-        }
-
-       const data = await db.select().from(accounts).where(eq(accounts.id, id));
-
-        if(!data.length) {
-            return NextResponse.json({ error: 'No Account found'}, { status: 404 });
-        }
-
-        return NextResponse.json(data, { status: 200 });
-            
-    } catch (error) {
-        console.error('Error fetching Account:', error); 
-        return NextResponse.json({ error: "Failed to fetch Account"}, { status: 404 });
-    }
-}
 
  export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
     try {
