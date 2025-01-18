@@ -40,30 +40,17 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 // import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 import  TransactionForm  from "../components/ui/TransactionForm";
 import Accounts from '@/components/ui/accounts';
 import { Budget } from '@/components/ui/Budget';
 import Reports from '@/components/ui/Reports';
+import  {Transactions}  from '@/components/ui/Transactions';
 
-// Mock data for the accounts
-// const accounts = [
-//   { id: '1', name: 'Main Account', bank: 'Chase', balance: 5420.69 },
-//   { id: '2', name: 'Savings', bank: 'Bank of America', balance: 15780.42 },
-//   { id: '3', name: 'Business', bank: 'Wells Fargo', balance: 892.12 },
-// ];
 
-// Mock data for transactions
-// const transactions = [
-//   { id: '1', date: '2024-03-20', description: 'Grocery Store', amount: -120.50, type: 'expense' },
-//   { id: '2', date: '2024-03-19', description: 'Salary Deposit', amount: 3000.00, type: 'income' },
-//   { id: '3', date: '2024-03-18', description: 'Restaurant', amount: -85.20, type: 'expense' },
-//   { id: '4', date: '2024-03-17', description: 'Freelance Payment', amount: 750.00, type: 'income' },
-// ];
 
-// Api Data
 // Fetching accounts and transactions from an API
 export interface Transaction {
   id: number;
@@ -335,6 +322,7 @@ function App() {
             </>
           )}
           {activeTab === 'accounts' && <Accounts />}
+          {activeTab === 'transactions' && <Transactions />}
           {activeTab === 'budget' && <Budget />}
           {activeTab === 'reports' && <Reports />}
         </div>

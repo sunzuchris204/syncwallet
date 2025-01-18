@@ -44,7 +44,7 @@ import {
       }
   
       return NextResponse.json({ message: "Transaction updated successfully", updatedTransaction });
-    } catch (error) {
+    } catch {
       return NextResponse.json({ message: "Error Creating Transaction" }, { status: 500 });
     }
   }

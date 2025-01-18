@@ -73,6 +73,10 @@ export default function Reports() {
       };
 
   const calculateSummary = () => {
+    if (!Array.isArray(filteredTransactions)) {
+        console.error('filteredTransactions is not an array:', filteredTransactions);
+        return { totalIncome: 0, totalExpenses: 0, netAmount: 0 }; // Fallback values
+      }
     const summary = filteredTransactions.reduce((acc, transaction) => {
         if (transaction.type === 'income') {
             acc.totalIncome += transaction.amount;
@@ -164,13 +168,13 @@ export default function Reports() {
               <div className="p-4 rounded-lg bg-green-500/10">
                 <p className="text-sm text-muted-foreground">Total Income</p>
                 <p className="text-2xl font-bold text-green-500">
-                  ${calculateSummary().totalIncome.toFixed(2)}
+                  ${calculateSummary().totalIncome}
                 </p>
               </div>
               <div className="p-4 rounded-lg bg-red-500/10">
                 <p className="text-sm text-muted-foreground">Total Expenses</p>
                 <p className="text-2xl font-bold text-red-500">
-                  ${calculateSummary().totalExpenses.toFixed(2)}
+                  ${calculateSummary().totalExpenses}
                 </p>
               </div>
               <div className="p-4 rounded-lg bg-primary/10">
@@ -179,7 +183,7 @@ export default function Reports() {
                   "text-2xl font-bold",
                   calculateSummary().netAmount >= 0 ? "text-green-500" : "text-red-500"
                 )}>
-                  ${calculateSummary().netAmount.toFixed(2)}
+                  ${calculateSummary().netAmount}
                 </p>
               </div>
             </div>
