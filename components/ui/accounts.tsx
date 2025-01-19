@@ -47,7 +47,7 @@ export default function Accounts() {
   useEffect(() => {
       const fetchAccounts = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/accounts/');
+          const response = await fetch('/api/accounts/');
           const data = await response.json();
   
           // Check if the response contains transactionsData and if it's an array
