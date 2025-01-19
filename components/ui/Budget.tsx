@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,6 @@ interface Budget {
   category: string;
   amount: number;
   spent: number;
-  color: string;
 }
 
 const initialBudgets: Budget[] = [
@@ -35,7 +34,6 @@ const initialBudgets: Budget[] = [
     category: 'Monthly Budget',
     amount: 5000,
     spent: 3240.50,
-    color: 'bg-blue-500',
   }
 ];
 
@@ -59,14 +57,33 @@ export function Budget() {
     amount: '',
   });
 
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/budgets/');
+        const data = await response.json();
+
+        // Check if the response contains budgetsData and if it's an array
+        if (data?.budgetsData && Array.isArray(data.budgetsData)) {
+          setBudgets(data.budgetsData); 
+        } else {
+          console.error("Invalid data structure received:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching Budgets:", error);
+      }
+    };
+
+    fetchBudgets();
+  },[]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newBudget: Budget = {
       id: (budgets.length + 1).toString(),
       category: formData.category,
       amount: parseFloat(formData.amount),
-      spent: 0,
-      color: `bg-${['blue', 'green', 'purple', 'pink', 'orange'][Math.floor(Math.random() * 5)]}-500`,
+      spent: 0
     };
     setBudgets([...budgets, newBudget]);
     setIsDialogOpen(false);
@@ -138,8 +155,8 @@ export function Budget() {
         {budgets.map((budget) => (
           <Card key={budget.id} className="p-6">
             <div className="flex items-center gap-4">
-              <div className={`${budget.color}/10 p-3 rounded-lg`}>
-                <Wallet className={`w-6 h-6 text-${budget.color.split('-')[1]}-500`} />
+              <div className={`/10 p-3 rounded-lg`}>
+                <Wallet className={`w-6 h-6 text-500`} />
               </div>
               <div>
                 <h3 className="font-semibold">{budget.category}</h3>
@@ -170,7 +187,7 @@ export function Budget() {
             </div>
             <div>
               <h3 className="font-semibold">Coming Soon</h3>
-              <p className="text-sm text-muted-foreground">More budget insights and analytics</p>
+              <p className="text-sm text-muted-foreground">Syncing Budgets with Transactions, update and Delete</p>
             </div>
           </div>
         </Card>
