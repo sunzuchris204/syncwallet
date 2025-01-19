@@ -77,7 +77,7 @@ function App() {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/accounts/');
+        const response = await fetch('/api/accounts/');
         const data = await response.json();
 
         // Check if the response contains transactionsData and if it's an array
@@ -100,7 +100,7 @@ function App() {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/transactions/');
+        const response = await fetch('/api/transactions/');
         const data = await response.json();
 
         // Check if the response contains transactionsData and if it's an array

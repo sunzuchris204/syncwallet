@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Landmark, PencilLine, Trash2, MoreVertical } from "lucide-react";
+import { Landmark, Plus, PencilLine, Trash2, MoreVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -22,11 +32,17 @@ import {
 type Account = {
   id: string;
   name: string;
-  balance: string;
+  balance: number;
 };
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    bank: "",
+    balance: 0,
+  });
 
   useEffect(() => {
       const fetchAccounts = async () => {
@@ -48,55 +64,41 @@ export default function Accounts() {
       fetchAccounts();
     }, []);
 
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //   e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
     
-    //   // Create a new account object with the form data
-    //   const newAccount = {
-    //     name: formData.name,
-    //     balance: formData.balance,
-    //   };
+      // Create a new account object with the form data
+      const newAccount = {
+        name: formData.name,
+        balance: formData.balance,
+      };
     
-    //   try {
-    //     const response = await fetch("http://localhost:3000/api/accounts/", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json", 
-    //       },
-    //       body: JSON.stringify(newAccount),
-    //     });
+      try {
+        const response = await fetch("http://localhost:3000/api/accounts/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", 
+          },
+          body: JSON.stringify(newAccount),
+        });
     
-    //     const result = await response.json();
+        const result = await response.json();
     
-    //     if (response.ok) {
-    //       // Successfully created account, update state with the new account
-    //       setAccounts((prev) => [...prev, result]);
-    //       setIsAddDialogOpen(false);  // Close the dialog
-    //       setFormData({ name: "", bank: "", balance: 0 });  // Reset form data
-    //     } else {
-    //       // Handle error in response (e.g., validation error)
-    //       alert(`Error: ${result.message || "An error occurred."}`);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error creating account:", error);
-    //     alert("There was an issue with creating the account. Please try again.");
-    //   }
-    // };
+        if (response.ok) {
+          // Successfully created account, update state with the new account
+          setAccounts((prev) => [...prev, result]);
+          setIsAddDialogOpen(false); 
+          setFormData({ name: "", bank: "", balance: 0 });  
+        } else {
+          // Handle error in response 
+          alert(`Error: ${result.message || "An error occurred."}`);
+        }
+      } catch (error) {
+        console.error("Error creating account:", error);
+        alert("There was an issue with creating the account. Please try again.");
+      }
+    };
     
-
-  // const handleEdit = (account: Account) => {
-  //   setEditingAccount(account);
-  //   setFormData({
-  //     name: account.name,
-  //     bank: account.bank,
-  //     balance: account.balance,
-  //   });
-  //   setIsAddDialogOpen(true);
-  // };
-
-  // const handleDelete = async (id: number) => {
-  //   setAccounts((prev) => prev.filter((account) => account.id !== id));
-  // };
   
 
   return (
@@ -108,7 +110,7 @@ export default function Accounts() {
             Manage your bank accounts and track your balances
           </p>
         </div>
-        {/* <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
@@ -117,7 +119,7 @@ export default function Accounts() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{editingAccount ? "Edit Account" : "Add New Account"}</DialogTitle>
+              <DialogTitle>Add New Account</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -145,11 +147,11 @@ export default function Accounts() {
                 />
               </div>
               <DialogFooter>
-                <Button type="submit">{editingAccount ? "Update" : "Add"} Account</Button>
+                <Button type="submit">Add Account</Button>
               </DialogFooter>
             </form>
           </DialogContent>
-        </Dialog> */}
+        </Dialog>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -162,7 +164,7 @@ export default function Accounts() {
                 </div>
                 <div>
                   <h3 className="font-semibold">{account.name}</h3>
-                  {/* <p className="text-sm text-muted-foreground">{account.bank}</p> */}
+                  <p className="text-sm text-muted-foreground">RWANDA</p>
                 </div>
               </div>
               <DropdownMenu>

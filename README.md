@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SyncWallet&#x20;
 
-## Getting Started
+## Overview
 
-First, run the development server:
+a modern wallet that combines and manages all your finances into one platforms that is easy to use, It allows users to create budgets, track transactions, and visualize financial data through reports. This project was developed as part of a programming challenge for the Taskforce PRO 2.0 program.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Budget Management:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  - Create and manage budgets categorized by user-defined categories.
+  - Track spending against allocated budgets.
+  - Visualize budget usage with progress bars.
 
-## Learn More
+- **Transaction Tracking:**
 
-To learn more about Next.js, take a look at the following resources:
+  - You can Create and View Transactions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Reporting and Visualization:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  - Generate reports to summarize spending habits.
+  - View Transaction in given period
 
-## Deploy on Vercel
+- **User-Friendly Interface:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - Intuitive and modern design using React and Tailwind CSS.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Tech Stack
+
+- **Frontend:**
+
+  - React with TypeScript
+  - Tailwind CSS for styling
+
+- **Backend:**
+
+  - Next.js API routes
+  - Drizzle ORM for database interactions
+
+- **Database:**
+
+  - Neon PostgreSQL
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- PostgreSQL database
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/sunzuchris204/syncwallet.git
+   cd syncwallet
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Configure environment variables:
+
+   - Create a `.env` file in the root directory.
+   - Add the following variables:
+     ```env
+     DATABASE_URL=<your-neon-database-url>
+     NEXT_PUBLIC_API_BASE_URL=http://localhost:3000/api
+     ```
+
+4. Run database migrations:
+
+   ```bash
+   npx drizzle-kit up
+   ```
+
+5. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open the app in your browser:
+
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## API Endpoints
+
+### Budgets
+
+#### Create Budget
+
+- **Endpoint:** `/api/budgets`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+      "amount": "1000.00",
+      "category": "Lunch",
+      "spent": "540.5"
+  }
+  ```
+- **Response:**
+  ```json
+  {"message":"Budget created successfully","budget":[{"id":6,"amount":"1000.00","category":"Lunch","spent":"540.5"}]}
+  ```
+
+#### Fetch Budgets
+
+- **Endpoint:** `/api/budgets`
+- **Method:** `GET`
+- **Response:**
+  ```json
+  {"budgetsData":[{"id":1,"amount":"5000.00","category":"Monthly Budget","spent":"1240.5"},{"id":2,"amount":"1000.00","category":"Transaportation","spent":"240.5"},{"id":4,"amount":"600.00","category":"Healthcare","spent":"0"},{"id":6,"amount":"1000.00","category":"Lunch","spent":"540.5"}]}
+  ```
+
+---
+
+## Future Improvements
+
+- Add authentication and user accounts.
+- Syncing All Transaction with Budgets and Accounts
+- Implement notifications for budget overspending.
+- Sorting Transactions based on selected Account
+
+---
+
+## Credits
+
+This project was developed by NIYIGENA CHRISTIAN as part of the Taskforce PRO 2.0 program challenge.&#x20;
+

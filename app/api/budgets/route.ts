@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const {category, amount,spent} = await req.json();
 
     // Validate the input (basic validation)
-    if (!category || !amount || !spent) {
+    if (!category || !amount) {
       return NextResponse.json(
         { message: 'Category, amount are required' },
         { status: 400 }

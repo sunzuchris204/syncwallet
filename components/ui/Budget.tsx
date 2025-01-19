@@ -55,12 +55,13 @@ export function Budget() {
   const [formData, setFormData] = useState({
     category: '',
     amount: '',
+    spent: '',
   });
 
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/budgets/');
+        const response = await fetch('/api/budgets/');
         const data = await response.json();
 
         // Check if the response contains budgetsData and if it's an array
@@ -77,17 +78,41 @@ export function Budget() {
     fetchBudgets();
   },[]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newBudget: Budget = {
-      id: (budgets.length + 1).toString(),
+    
+    const newBudget = {
       category: formData.category,
       amount: parseFloat(formData.amount),
-      spent: 0
+      spent: parseFloat(formData.spent) || 0,
     };
-    setBudgets([...budgets, newBudget]);
-    setIsDialogOpen(false);
-    setFormData({ category: '', amount: '' });
+
+    try {
+      const response = await fetch('/api/budgets/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBudget),
+      });
+  
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        console.error('Error details:', errorDetails);
+        throw new Error('Failed to create Budget');
+      }
+  
+      const data = await response.json();
+      console.log('Budget created:', data.budgetsData);
+  
+      // Reset form state and dialog
+      setBudgets((prevBudgets) => [...prevBudgets, data.budget]);
+      setFormData({ category: '', amount: '', spent: '' });
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error('Error creating budget:', error);
+    }
+
   };
 
   const calculatePercentage = (spent: number, total: number) => {
@@ -161,7 +186,7 @@ export function Budget() {
               <div>
                 <h3 className="font-semibold">{budget.category}</h3>
                 <p className="text-2xl font-bold mt-1">
-                  ${budget.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  ${budget.amount}
                 </p>
               </div>
             </div>
@@ -169,7 +194,7 @@ export function Budget() {
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Spent</span>
                 <span className="font-medium">
-                  ${budget.spent.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  ${budget.spent}
                 </span>
               </div>
               <Progress value={calculatePercentage(budget.spent, budget.amount)} />
