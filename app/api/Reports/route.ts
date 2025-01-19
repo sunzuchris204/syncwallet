@@ -10,6 +10,8 @@ export async function GET(req: Request)
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate'); 
 
+    
+
     // Validate that both dates are provided
     if (!startDate || !endDate) {
       return NextResponse.json(
@@ -17,13 +19,18 @@ export async function GET(req: Request)
         { status: 400 }
       );
     }
+
+    // Convert dates to ISO string format
+    const start = new Date(startDate).toISOString();
+    const end = new Date(endDate).toISOString();
+
     const ReportsData = await db
     .select()
     .from(transactions)
     .where(
       and(
-        gte(transactions.date, new Date(startDate)), // Start date condition
-        lte(transactions.date, new Date(endDate))  // End date condition
+        gte(transactions.date, new Date(start)), // Start date condition
+        lte(transactions.date, new Date(end))  // End date condition
       )
     );
     return NextResponse.json({ ReportsData });
