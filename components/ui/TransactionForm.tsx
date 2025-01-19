@@ -23,19 +23,19 @@ interface FormData {
 }
 
 const TransactionForm = () => {
-  const [accounts, setAccounts] = useState<Account[]>([]); // Set the correct type for accounts
+  const [accounts, setAccounts] = useState<Account[]>([]);
   const { control,register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   // Fetch accounts from the backend when component mounts
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/accounts'); // Replace with your API endpoint
+        const response = await fetch('http://localhost:3000/api/accounts');
         const data = await response.json();
 
-        // Check if the response contains the "transactions" array
+        
         if (data && Array.isArray(data.AccountsData)) {
-          setAccounts(data.AccountsData); // Use transactions as accounts
+          setAccounts(data.AccountsData);
         } else {
           console.error("Expected 'transactions' array, but got:", data);
         }
@@ -131,8 +131,8 @@ const TransactionForm = () => {
                 </Select>
               )}
             />
-            {errors.account && (
-              <p className="text-red-500">{errors.account.message}</p>
+            {errors.accountId  && (
+              <p className="text-red-500">{errors.accountId.message}</p>
             )}
           </div>
 
