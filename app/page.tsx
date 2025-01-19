@@ -62,7 +62,7 @@ export interface Transaction {
 }
 
 export interface Accounts {
-  id: number;
+  id: string;
   name: string;
   balance: number;
 }
@@ -72,7 +72,7 @@ function App() {
   const [accounts, setAccounts] = useState<Accounts[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [selectedAccount, setSelectedAccount] = useState<number | null>();
+  const [selectedAccount, setSelectedAccount] = useState<string | undefined>();
 
   useEffect(() => {
     const fetchAccounts = async () => {
