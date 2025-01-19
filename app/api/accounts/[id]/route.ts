@@ -2,14 +2,14 @@ import { deleteAccount, updateAccount } from "@/app/services/AccountsServices";
 import { accounts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { PagesRouteHandlerContext } from "next/dist/server/route-modules/pages/module.compiled";
+import type { RouteHandlerContext } from 'next/dist/server/web/types';
 import { NextRequest, NextResponse } from "next/server";
 
 
 
- export async function GET(req: Request,{ params }: { params: { id: string } }) {
+ export async function GET(req: Request,context: RouteHandlerContext) {
   try {
-    const id = parseInt(params.id, 10);
+    const id = parseInt(context.params.id, 10);
 
         if(isNaN(id)) {
             return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
