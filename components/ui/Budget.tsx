@@ -1,6 +1,6 @@
 // import { useState } from 'react';
 import { Card } from '@/components/ui/card';
-// import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/progress';
 import { PieChart, Wallet } from 'lucide-react';
 
 export function Budget() {
@@ -28,7 +28,7 @@ export function Budget() {
               <span className="text-muted-foreground">Spent</span>
               <span className="font-medium">$3,240.50</span>
             </div>
-            {/* <Progress value={64.81} /> */}
+            <Progress value={64.81} />
             <p className="text-sm text-muted-foreground">65% of budget used</p>
           </div>
         </Card>

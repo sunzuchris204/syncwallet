@@ -169,12 +169,12 @@ export function Transactions() {
                 <TableCell>{transaction.category}</TableCell>
                 <TableCell>
                   <Badge 
-                    variant={transaction.type === 'income' ? 'default' : 'secondary'}
+                    variant={transaction.type === 'Income' ? 'default' : 'secondary'}
                     className={cn(
-                      transaction.type === 'income' ? "bg-green-500/10 text-green-500 hover:bg-green-500/20" : "bg-red-500/10 text-red-500 hover:bg-red-500/20"
+                      transaction.type === 'Income' ? "bg-green-500/10 text-green-500 hover:bg-green-500/20" : "bg-red-500/10 text-red-500 hover:bg-red-500/20"
                     )}
                   >
-                    {transaction.type === 'income' ? (
+                    {transaction.type === 'Income' ? (
                       <ArrowUpRight className="w-3 h-3 mr-1 inline-block" />
                     ) : (
                       <ArrowDownRight className="w-3 h-3 mr-1 inline-block" />
@@ -184,9 +184,9 @@ export function Transactions() {
                 </TableCell>
                 <TableCell className={cn(
                   "text-right font-medium",
-                  transaction.amount > 0 ? "text-green-500" : "text-red-500"
+                  transaction.type === 'Income' ? "text-green-500" : "text-red-500"
                 )}>
-                  {transaction.amount > 0 ? "+" : ""}
+                  {transaction.type === 'Income' ? "+" : "-"}
                   ${Math.abs(transaction.amount).toFixed(2)}
                 </TableCell>
                 <TableCell>
