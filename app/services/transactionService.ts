@@ -22,7 +22,7 @@ export const createTransaction = async (data: {
 }) => {
   const { amount, type, accountId, category, date } = data;
   return await db.insert(transactions).values({
-    amount,
+    amount: amount.toString(),
     type,
     accountId,
     category,
