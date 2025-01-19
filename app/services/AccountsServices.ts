@@ -24,7 +24,7 @@ export async function getAccountById(id: number) {
 
 export const createAccounts = async (data: {
   name: string;
-  balance: number;
+  balance: string;
 }) => {
   const { name,balance } = data;
   return await db.insert(accounts).values({
@@ -34,23 +34,23 @@ export const createAccounts = async (data: {
 };
 
 
-export const updateAccount = async (id: number, data: {
-  name: string;
-  balance: number;
-}) => {
-  try {
-    const updatedTransaction = await db
-      .update(accounts)
-      .set(data)
-      .where(eq(accounts.id, id))
-      .returning();
+// export const updateAccount = async (id: number, data: {
+//   name: string;
+//   balance: number;
+// }) => {
+//   try {
+//     const updatedTransaction = await db
+//       .update(accounts)
+//       .set(data)
+//       .where(eq(accounts.id, id))
+//       .returning();
 
-    return updatedTransaction;
-  } catch {
-    console.error("Failed to update transaction");
-  }
-};
+//     return updatedTransaction;
+//   } catch {
+//     console.error("Failed to update transaction");
+//   }
+// };
 
-export const deleteAccount = async (id: number) => {
-  return await db.delete(accounts).where(eq(accounts.id,id));
-};
+// export const deleteAccount = async (id: number) => {
+//   return await db.delete(accounts).where(eq(accounts.id,id));
+// };
