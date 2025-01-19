@@ -2,7 +2,7 @@ import { deleteAccount, updateAccount } from "@/app/services/AccountsServices";
 import { accounts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import type { RouteHandlerContext } from 'next/dist/server/web/types';
+import type { RouteHandlerContext } from 'next/server';
 import { NextRequest, NextResponse } from "next/server";
 
 
