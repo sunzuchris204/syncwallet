@@ -7,9 +7,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
- export async function GET(req: Request,context: PagesRouteHandlerContext<{ id: string }>) {
-    try {
-        const id = parseInt(context.params.id, 10);
+ export async function GET(req: Request,{ params }: { params: { id: string } }) {
+  try {
+    const id = parseInt(params.id, 10);
 
         if(isNaN(id)) {
             return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
@@ -29,9 +29,9 @@ import { NextRequest, NextResponse } from "next/server";
     }
 }
 
- export async function PATCH(req: NextRequest, context: PagesRouteHandlerContext<{ id: string }>) {
+ export async function PATCH(req: NextRequest,  { params }: { params: { id: string } }) {
   try {
-      const id = parseInt(context.params.id, 10);
+    const id = parseInt(params.id, 10);
       const data = await req.json();
   
       const updatedAccount = await updateAccount(id, data);
@@ -46,9 +46,9 @@ import { NextRequest, NextResponse } from "next/server";
     }
   }
 
-  export async function DELETE(req: Request, context: PagesRouteHandlerContext<{ id: string }>) {
+  export async function DELETE(req: Request,  { params }: { params: { id: string } }) {
     try {
-        const id = parseInt(context.params.id, 10);
+      const id = parseInt(params.id, 10);
     
         if (!id) {
           return NextResponse.json(
