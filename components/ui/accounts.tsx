@@ -1,19 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Landmark, Plus, PencilLine, Trash2, MoreVertical } from "lucide-react";
+import { Landmark, PencilLine, Trash2, MoreVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -29,15 +19,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+type Account = {
+  id: string;
+  name: string;
+  balance: string;
+};
+
 export default function Accounts() {
-  const [accounts, setAccounts] = useState([]);
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [editingAccount, setEditingAccount] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    bank: "",
-    balance: 0,
-  });
+  const [accounts, setAccounts] = useState<Account[]>([]);
 
   useEffect(() => {
       const fetchAccounts = async () => {
@@ -59,55 +48,55 @@ export default function Accounts() {
       fetchAccounts();
     }, []);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //   e.preventDefault();
     
-      // Create a new account object with the form data
-      const newAccount = {
-        name: formData.name,
-        balance: formData.balance,
-      };
+    //   // Create a new account object with the form data
+    //   const newAccount = {
+    //     name: formData.name,
+    //     balance: formData.balance,
+    //   };
     
-      try {
-        const response = await fetch("http://localhost:3000/api/accounts/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json", 
-          },
-          body: JSON.stringify(newAccount),
-        });
+    //   try {
+    //     const response = await fetch("http://localhost:3000/api/accounts/", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json", 
+    //       },
+    //       body: JSON.stringify(newAccount),
+    //     });
     
-        const result = await response.json();
+    //     const result = await response.json();
     
-        if (response.ok) {
-          // Successfully created account, update state with the new account
-          setAccounts((prev) => [...prev, result]);
-          setIsAddDialogOpen(false);  // Close the dialog
-          setFormData({ name: "", bank: "", balance: 0 });  // Reset form data
-        } else {
-          // Handle error in response (e.g., validation error)
-          alert(`Error: ${result.message || "An error occurred."}`);
-        }
-      } catch (error) {
-        console.error("Error creating account:", error);
-        alert("There was an issue with creating the account. Please try again.");
-      }
-    };
+    //     if (response.ok) {
+    //       // Successfully created account, update state with the new account
+    //       setAccounts((prev) => [...prev, result]);
+    //       setIsAddDialogOpen(false);  // Close the dialog
+    //       setFormData({ name: "", bank: "", balance: 0 });  // Reset form data
+    //     } else {
+    //       // Handle error in response (e.g., validation error)
+    //       alert(`Error: ${result.message || "An error occurred."}`);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error creating account:", error);
+    //     alert("There was an issue with creating the account. Please try again.");
+    //   }
+    // };
     
 
-  const handleEdit = (account) => {
-    setEditingAccount(account);
-    setFormData({
-      name: account.name,
-      bank: account.bank,
-      balance: account.balance,
-    });
-    setIsAddDialogOpen(true);
-  };
+  // const handleEdit = (account: Account) => {
+  //   setEditingAccount(account);
+  //   setFormData({
+  //     name: account.name,
+  //     bank: account.bank,
+  //     balance: account.balance,
+  //   });
+  //   setIsAddDialogOpen(true);
+  // };
 
-  const handleDelete = async (id: number) => {
-    setAccounts((prev) => prev.filter((account) => account.id !== id));
-  };
+  // const handleDelete = async (id: number) => {
+  //   setAccounts((prev) => prev.filter((account) => account.id !== id));
+  // };
   
 
   return (
@@ -119,7 +108,7 @@ export default function Accounts() {
             Manage your bank accounts and track your balances
           </p>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        {/* <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
@@ -160,7 +149,7 @@ export default function Accounts() {
               </DialogFooter>
             </form>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -173,7 +162,7 @@ export default function Accounts() {
                 </div>
                 <div>
                   <h3 className="font-semibold">{account.name}</h3>
-                  <p className="text-sm text-muted-foreground">{account.bank}</p>
+                  {/* <p className="text-sm text-muted-foreground">{account.bank}</p> */}
                 </div>
               </div>
               <DropdownMenu>
@@ -183,13 +172,12 @@ export default function Accounts() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleEdit(account)}>
+                  <DropdownMenuItem>
                     <PencilLine className="mr-2 h-4 w-4" />
                     Edit
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-red-600"
-                    onClick={() => handleDelete(account.id)}
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
@@ -199,7 +187,7 @@ export default function Accounts() {
             </div>
             <div className="mt-4">
               <p className="text-2xl font-bold">
-                ${account.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                ${account.balance}
               </p>
               <p className="text-sm text-muted-foreground">Current Balance</p>
             </div>
@@ -222,9 +210,9 @@ export default function Accounts() {
             {accounts.map((account) => (
               <TableRow key={account.id}>
                 <TableCell className="font-medium">{account.name}</TableCell>
-                <TableCell>{account.bank}</TableCell>
+                <TableCell></TableCell>
                 <TableCell className="text-right">
-                  ${account.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  ${account.balance}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -234,13 +222,13 @@ export default function Accounts() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEdit(account)}>
+                      <DropdownMenuItem>
                         <PencilLine className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-red-600"
-                        onClick={() => handleDelete(account.id)}
+                        
                       >
                         <Trash2 className="mr-2 h-4 w-4" />
                         Delete
