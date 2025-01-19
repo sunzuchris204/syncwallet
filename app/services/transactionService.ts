@@ -1,7 +1,7 @@
 // services/transactionService.ts
 import { db } from "../../lib/db";
 import { transactions } from "../../db/schema";
-import { eq } from 'drizzle-orm';
+// import { eq } from 'drizzle-orm';
 
 
 
@@ -30,26 +30,26 @@ export const createTransaction = async (data: {
   });
 };
 
-export const updateTransaction = async (id: number, data: {
-  amount: number;
-  type: string;
-  accountId: number;
-  category: string;
-  date?: string;
-}) => {
-  try {
-    const updatedTransaction = await db
-      .update(transactions)
-      .set(data)
-      .where(eq(transactions.id, id))
-      .returning();
+// export const updateTransaction = async (id: number, data: {
+//   amount: number;
+//   type: string;
+//   accountId: number;
+//   category: string;
+//   date?: string;
+// }) => {
+//   try {
+//     const updatedTransaction = await db
+//       .update(transactions)
+//       .set(data)
+//       .where(eq(transactions.id, id))
+//       .returning();
 
-    return updatedTransaction;
-  } catch {
-    console.error("Failed to update transaction");
-  }
-};
+//     return updatedTransaction;
+//   } catch {
+//     console.error("Failed to update transaction");
+//   }
+// };
 
-export const deleteTransaction = async (id: number) => {
-  return await db.delete(transactions).where(eq(transactions.id,id));
-};
+// export const deleteTransaction = async (id: number) => {
+//   return await db.delete(transactions).where(eq(transactions.id,id));
+// };
