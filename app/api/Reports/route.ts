@@ -29,8 +29,8 @@ export async function GET(req: Request)
     .from(transactions)
     .where(
       and(
-        gte(transactions.date, new Date(start)), // Start date condition
-        lte(transactions.date, new Date(end))  // End date condition
+        gte(transactions.date, start), 
+        lte(transactions.date, end) 
       )
     );
     return NextResponse.json({ ReportsData });
