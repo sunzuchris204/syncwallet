@@ -5,11 +5,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { Controller, useForm } from 'react-hook-form';
 
 interface Account {
-  id: number;
+  id: string;
   name: string;
   balance: string;
 }
@@ -17,14 +17,14 @@ interface Account {
 interface FormData {
   amount: number;
   type: string;
-  accountId: number;
+  accountId: string;
   category: string;
   date?: string;
 }
 
 const TransactionForm = () => {
   const [accounts, setAccounts] = useState<Account[]>([]); // Set the correct type for accounts
-  const { control,register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>();
+  const { control,register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   // Fetch accounts from the backend when component mounts
   useEffect(() => {
