@@ -1,21 +1,24 @@
-import { deleteAccount, updateAccount } from "@/app/services/AccountsServices";
+// import { deleteAccount, updateAccount } from "@/app/services/AccountsServices";
 import { accounts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import type { RouteHandlerContext } from 'next/server';
-import { NextRequest, NextResponse } from "next/server";
+// import type { RouteHandlerContext } from 'next/server';
+import { NextResponse } from "next/server";
 
 
 
- export async function GET(req: Request,context: RouteHandlerContext) {
-  try {
-    const id = parseInt(context.params.id, 10);
+ export async function GET(req: Request,context: { params: Promise<{ id: string }> }
+ ) {
+   try {
+        // Note the await here
+        const { id } = await context.params;
+        const parsedId = parseInt(id, 10);
 
-        if(isNaN(id)) {
+        if(isNaN(parsedId)) {
             return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
         }
 
-       const data = await db.select().from(accounts).where(eq(accounts.id, id));
+       const data = await db.select().from(accounts).where(eq(accounts.id, parsedId));
 
         if(!data.length) {
             return NextResponse.json({ error: 'No Account found'}, { status: 404 });
