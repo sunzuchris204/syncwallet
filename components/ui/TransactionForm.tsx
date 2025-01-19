@@ -124,7 +124,7 @@ const TransactionForm = () => {
                   <SelectContent>
                     {Array.isArray(accounts) && accounts.map((account) => (
                       <SelectItem key={account.id} value={account.id}>
-                        {account.name} {/* Display account name */}
+                        {account.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
